@@ -1,5 +1,5 @@
 {
-  "first_launch": false,
+  "first_launch": true,
   "cmd_symbol" : "> ",
   "show_username" : true
 }
