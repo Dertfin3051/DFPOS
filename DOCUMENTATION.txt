@@ -1,0 +1,11 @@
+DF Portable Operation System
+Автор : dertfin / ДертФин
+
+Установка :
+  | Просто запустите файл dfpos через python3
+  | и согласитесь с установкой
+
+Первый запуск:
+{
+  "first_launch" : true
+}
