@@ -91,9 +91,9 @@ elif config_read_data['first_launch'] == False:
                     print("Вы успешно вошли! \n")
                     break
                 else:
-                    print(Fore.RED + "Вы ввели неправильный пароль! ")
+                    print(Fore.RED + "Вы ввели неправильный пароль! " + Fore.RESET)
             else:
-                print("Неизвестный пользователь!")
+                print(Fore.RED + "Неизвестный пользователь!" + Fore.RESET)
 
         # System
 
@@ -101,7 +101,74 @@ elif config_read_data['first_launch'] == False:
             if config_read_data['show_username'] == True:
                 cmd = input(user_data['username'] + " " + config_read_data['cmd_symbol'] + " ")
             elif config_read_data['show_username'] == False:
-                cmd = input(" " + config_read_data['cmd_symbol'] + "")
+                cmd = input(" " + config_read_data['cmd_symbol'] + " ")
+
+            if cmd == "settings":
+                while True:
+                    if config_read_data['show_username'] == True:
+                        cmd_settings = input(user_data['username'] + "/settings " + config_read_data['cmd_symbol'] + " ")
+                    elif config_read_data['show_username'] == False:
+                        cmd_settings = input("settings " + config_read_data['cmd_symbol'] + " ")
+
+                    if cmd_settings == "exit":
+                        print("Выход из настроек...")
+                        break
+                    elif cmd_settings == "help":
+                        print("\nДоступные команды настроек: \n")
+                        print("exit - Выход")
+                        print("change password - Смена пароля")
+                        print("change username - Смена имени пользователя")
+                        print("change symbol - Смена символа ввода")
+                        print("show username - Вкл/выкл отображения имени пользователя")
+                        print("\n")
+                    elif cmd_settings == "change password":
+                        if input("Введите текущий пароль: ") == user_data['password']:
+                            pswd_new = input("Введите новый пароль: ")
+                            if pswd_new == input("Подтвердите новый пароль: "):
+                                print(Fore.GREEN + "Ваш пароль успешно изменен!" + Fore.RESET)
+                                user_data['password'] = pswd_new
+                                with open("user.json", "w", encoding='utf-8') as user_write_file:
+                                    json.dump(user_data, user_write_file)
+                            else:
+                                print(Fore.RED + "Пароли не совпадают! " + Fore.RESET)
+                        else:
+                            print(Fore.RED + "Вы ввели неверный пароль!" + Fore.RESET)
+                    elif cmd_settings == "change symbol":
+                        symbol_new = input("Введите новый символ для ввода(Без пробелов!): ")
+                        config_read_data['cmd_symbol'] = symbol_new
+                        with open("config.json", "w", encoding='utf-8') as config_write_file:
+                            json.dump(config_read_data, config_write_file)
+                        print(Fore.GREEN + "Символ ввода успешно изменён на " + Fore.YELLOW + symbol_new + Fore.GREEN + "!" + Fore.RESET)
+                    elif cmd_settings == "change username":
+                        if input("Введите текущий пароль: ") == user_data['password']:
+                            username_new = input("Введите новое имя пользователя: ")
+                            user_data['username'] = username_new
+                            with open("user.json", "w", encoding='utf-8') as user_write_file:
+                                json.dump(user_data, user_write_file)
+                                print(Fore.GREEN + "Ваше имя пользователя успешно изменено на " + Fore.YELLOW + username_new + Fore.GREEN + "!" + Fore.RESET)
+                        else:
+                            print(Fore.RED + "Вы ввели неверный пароль!" + Fore.RESET)
+                    elif cmd_settings == "show username":
+                        if config_read_data['show_username'] == True:
+                            config_read_data['show_username'] = False
+                            with open("config.json", "w", encoding='utf-8') as config_write_file:
+                                json.dump(config_read_data, config_write_file)
+                            print(Fore.GREEN + "Режим показа имени пользователя успешно" + Fore.YELLOW + " выключен" + Fore.GREEN + "!" + Fore.RESET)
+                        elif config_read_data['show_username'] == False:
+                            config_read_data['show_username'] = True
+                            with open("config.json", "w", encoding='utf-8') as config_write_file:
+                                json.dump(config_read_data, config_write_file)
+                            print(
+                                Fore.GREEN + "Режим показа имени пользователя успешно" + Fore.YELLOW + " включен" + Fore.GREEN + "!" + Fore.RESET)
+                        else:
+                            print(Fore.RED + "Такой команды не существует! Используй help для получения списка доступных команд." + Fore.RESET)
+            elif cmd == "help":
+                print("\nСписок доступных команд: \n")
+                print("settings - Настройки")
+                # New Commands Here !!!
+                print("\n")
+            else:
+                print(Fore.RED + "Неизвестная команда! Используй help для получения списка доступных команд." + Fore.RESET)
 
 
 
