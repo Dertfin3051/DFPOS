@@ -28,3 +28,5 @@ DF Portable Operation System
     | help - Помощь
     | exit - Выход
     | info - Информация о системе
+  |
+  | pswdgen - Генератор паролей

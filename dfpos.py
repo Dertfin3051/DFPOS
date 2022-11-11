@@ -11,10 +11,11 @@ import os
 import sys
 import psutil
 import platform
+import dfpos_tools
 
 # Variables
 
-version = "0.1.5"
+version = "0.1.6"
 memory = psutil.virtual_memory()
 memory = int(memory.total / 1000000000)
 total_space = int(psutil.disk_usage("C: ").total/(1024 * 1024 * 1024))
@@ -176,6 +177,7 @@ elif config_read_data['first_launch'] == False:
                 print("\nСписок доступных команд: \n")
                 print("settings - Настройки")
                 print("system - Система")
+                print("pswdgen - Генератор паролей")
                 print("\n")
             elif cmd == "system" or cmd == "sys":
                 while True:
@@ -200,6 +202,21 @@ elif config_read_data['first_launch'] == False:
                         break
                     else:
                         print(Fore.RED + "Неизвестная команда! Используй help для получения списка доступных команд." + Fore.RESET)
+            elif cmd == "password_generator" or cmd == "pswdgen" or cmd == "password_renerator" or cmd == "password_gen":
+                print("\nВыберете генератор паролей :")
+                print("1. DFPOS_Password_Generator\n")
+                if config_read_data['show_username'] == True:
+                    cmd_pswdgen = input(user_data['username'] + "/pswdgen " + config_read_data['cmd_symbol'] + " ")
+                elif config_read_data['show_username'] == False:
+                    cmd_pswdgen = input("pswdgen " + config_read_data['cmd_symbol'] + " ")
+                if cmd_pswdgen == "1":
+                    print("\nГенерирую случайный пароль.")
+                    t.sleep(0.7)
+                    print("Генерирую случайный пароль..")
+                    t.sleep(0.7)
+                    print("Генерирую случайный пароль...", end="\n")
+                    t.sleep(0.5)
+                    print(f"\nВаш рандомный пароль : {dfpos_tools.pswdgen(1)}\n")
             else:
                 print(Fore.RED + "Неизвестная команда! Используй help для получения списка доступных команд." + Fore.RESET)
 
