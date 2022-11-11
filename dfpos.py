@@ -12,6 +12,8 @@ import sys
 import psutil
 import platform
 import dfpos_tools
+from colorama import init
+init(convert=True)
 
 # Variables
 
