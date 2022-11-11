@@ -9,6 +9,16 @@ from colorama import Fore
 from colorama import Back
 import os
 import sys
+import psutil
+import platform
+
+# Variables
+
+version = "0.1.5"
+memory = psutil.virtual_memory()
+memory = int(memory.total / 1000000000)
+total_space = int(psutil.disk_usage("C: ").total/(1024 * 1024 * 1024))
+global_system = platform.system()
 
 # Import Files
 
@@ -165,8 +175,31 @@ elif config_read_data['first_launch'] == False:
             elif cmd == "help":
                 print("\nСписок доступных команд: \n")
                 print("settings - Настройки")
-                # New Commands Here !!!
+                print("system - Система")
                 print("\n")
+            elif cmd == "system" or cmd == "sys":
+                while True:
+                    if config_read_data['show_username'] == True:
+                        cmd_system = input(user_data['username'] + "/system " + config_read_data['cmd_symbol'] + " ")
+                    elif config_read_data['show_username'] == False:
+                        cmd_system = input("system " + config_read_data['cmd_symbol'] + " ")
+                    if cmd_system == "help":
+                        print("\nДоступные команды системы: \n")
+                        print("info - Информация о системе")
+                        print("exit - Выход")
+                        print("\n")
+                    elif cmd_system == "info":
+                        print("\n\nDF Portable Operation System\n")
+                        print(f"Версия : {version}")
+                        print(f"ОЗУ : {memory}гб")
+                        if global_system == "Windows":
+                            print(f"Память : {total_space}гб")
+                        print(f"Основная система : {global_system}")
+                        print("\n")
+                    elif cmd_system == "exit":
+                        break
+                    else:
+                        print(Fore.RED + "Неизвестная команда! Используй help для получения списка доступных команд." + Fore.RESET)
             else:
                 print(Fore.RED + "Неизвестная команда! Используй help для получения списка доступных команд." + Fore.RESET)
 

@@ -21,3 +21,10 @@ DF Portable Operation System
     | change symbol - Смена символа ввода
     | change username - Смена имени пользователя
     | show username - Вкл/выкл отображения имени пользователя
+    | help - Помощь
+  |
+  | system - Система:
+  | Система:
+    | help - Помощь
+    | exit - Выход
+    | info - Информация о системе
