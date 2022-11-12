@@ -31,6 +31,7 @@ if platform.system() == "Windows":
     total_space = int(psutil.disk_usage("C: ").total/(1024 * 1024 * 1024))
 else:
     total_space = "Не удалось загрузить инф-цию о диске"
+    int(psutil.disk_usage("File System ").total / (1024 * 1024 * 1024))
 global_system = platform.system()
 
 # Import Files
