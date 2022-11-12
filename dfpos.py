@@ -9,18 +9,28 @@ from colorama import Fore
 from colorama import Back
 import os
 import sys
-import psutil
+try:
+    import psutil
+except:
+    pass
 import platform
 import dfpos_tools
 from colorama import init
 init(convert=True)
+import getpass
 
 # Variables
 
-version = "0.1.6"
-memory = psutil.virtual_memory()
+version = "0.1.7"
+try:
+    memory = psutil.virtual_memory()
+except ModuleNotFoundError:
+    memory = "Не удалось загрузить ОЗУ"
 memory = int(memory.total / 1000000000)
-total_space = int(psutil.disk_usage("C: ").total/(1024 * 1024 * 1024))
+if platform.system() == "Windows":
+    total_space = int(psutil.disk_usage("C: ").total/(1024 * 1024 * 1024))
+else:
+    total_space = "Не удалось загрузить инф-цию о диске"
 global_system = platform.system()
 
 # Import Files
@@ -70,6 +80,7 @@ if config_read_data['first_launch'] == True:
             json.dump(config_read_data, config_write_file, indent=2)
         print(Fore.GREEN + "Установка завершена!")
         print("Перезапустите программу для запуска Операционной Системы.")
+        input("Нажмите на Enter для выхода...")
     elif install_acsess == "n" or install_acsess == "N":
         print(Fore.RED + "Установка DFPOS отменена! Программа закроется через 10 секунд.")
         t.sleep(10)
@@ -91,6 +102,7 @@ elif config_read_data['first_launch'] == False:
             elif pswd_reg == pswd_reg2:
                 print(Fore.GREEN + "Вы успешно создали нового пользователя : " + user_reg)
                 print("Перезайдите для запуска Операционной Системы")
+                input("Нажмите на Enter для выхода...")
                 with open("user.json", "w", encoding='utf-8') as user_write_file:
                     user_data['username'] = user_reg
                     user_data['password'] = pswd_reg
@@ -100,7 +112,12 @@ elif config_read_data['first_launch'] == False:
     elif user_data['registred'] == True:
         while True:
             if (input("\nВведите имя пользователя : ") == user_data['username']):
-                if (input("Введите пароль : ") == user_data['password']):
+                if config_read_data['show_password'] == False:
+                    w_pass = getpass.getpass("Введите пароль : ")
+                else:
+                    w_pass = input("Введите пароль : ")
+
+                if (w_pass == user_data['password']):
                     print("Вы успешно вошли! \n")
                     break
                 else:
@@ -133,6 +150,7 @@ elif config_read_data['first_launch'] == False:
                         print("change username - Смена имени пользователя")
                         print("change symbol - Смена символа ввода")
                         print("show username - Вкл/выкл отображения имени пользователя")
+                        print("show password - Вкл/выкл отображения пароля при вводе")
                         print("\n")
                     elif cmd_settings == "change password":
                         if input("Введите текущий пароль: ") == user_data['password']:
@@ -175,6 +193,17 @@ elif config_read_data['first_launch'] == False:
                                 Fore.GREEN + "Режим показа имени пользователя успешно" + Fore.YELLOW + " включен" + Fore.GREEN + "!" + Fore.RESET)
                         else:
                             print(Fore.RED + "Такой команды не существует! Используй help для получения списка доступных команд." + Fore.RESET)
+                    elif cmd_settings == "show password":
+                        if config_read_data['show_password'] == True:
+                            config_read_data['show_password'] = False
+                            with open("config.json", "w", encoding='utf-8') as config_write_file:
+                                json.dump(config_read_data, config_write_file)
+                            print(Fore.GREEN + "Режим показа пароля успешно " + Fore.YELLOW + "выключен" + Fore.GREEN + "!" + Fore.RESET)
+                        elif config_read_data['show_password'] == False:
+                            config_read_data['show_password'] = True
+                            with open("config.json", "w", encoding='utf-8') as config_write_file:
+                                json.dump(config_read_data, config_write_file)
+                            print(Fore.GREEN + "Режим показа пароля успешно " + Fore.YELLOW + "включен" + Fore.GREEN + "!" + Fore.RESET)
             elif cmd == "help":
                 print("\nСписок доступных команд: \n")
                 print("settings - Настройки")

@@ -21,6 +21,7 @@ DF Portable Operation System
     | change symbol - Смена символа ввода
     | change username - Смена имени пользователя
     | show username - Вкл/выкл отображения имени пользователя
+    | show password - Вкл/выкл отображения пароля при вводе
     | help - Помощь
   |
   | system - Система:
