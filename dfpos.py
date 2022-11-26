@@ -29,13 +29,13 @@ version = "0.1.8"
 if psutilStatus == 1:
     memory = psutil.virtual_memory()
     memory = int(memory.total / 1000000000)
-
-else:
-    memory = Fore.RED + "Error 102 : Не удалось загрузить информацию об ОЗУ"
     if platform.system() == "Windows":
         total_space = int(psutil.disk_usage("C: ").total/(1024 * 1024 * 1024))
     else:
         total_space = "Error 101 : Не удалось загрузить информацию о диске"
+
+else:
+    total_space = "Error 101 : Не удалось загрузить информацию о диске"
 
 global_system = platform.system()
 
