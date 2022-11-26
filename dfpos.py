@@ -11,27 +11,32 @@ import os
 import sys
 try:
     import psutil
+    psutilStatus = 1
 except:
-    pass
+    psutilStatus = 0
 import platform
 import dfpos_tools
+
 from colorama import init
 init(convert=True)
+
 import getpass
 
 # Variables
 
-version = "0.1.7"
-try:
+version = "0.1.8"
+
+if psutilStatus == 1:
     memory = psutil.virtual_memory()
-except ModuleNotFoundError:
-    memory = "Не удалось загрузить ОЗУ"
-memory = int(memory.total / 1000000000)
-if platform.system() == "Windows":
-    total_space = int(psutil.disk_usage("C: ").total/(1024 * 1024 * 1024))
+    memory = int(memory.total / 1000000000)
+
 else:
-    total_space = "Не удалось загрузить инф-цию о диске"
-    int(psutil.disk_usage("File System ").total / (1024 * 1024 * 1024))
+    memory = Fore.RED + "Error 102 : Не удалось загрузить информацию об ОЗУ"
+    if platform.system() == "Windows":
+        total_space = int(psutil.disk_usage("C: ").total/(1024 * 1024 * 1024))
+    else:
+        total_space = "Error 101 : Не удалось загрузить информацию о диске"
+
 global_system = platform.system()
 
 # Import Files

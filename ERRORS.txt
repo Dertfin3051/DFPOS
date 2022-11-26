@@ -1,0 +1,7 @@
+1 - Modules:
+
+    101 - Не удалось загрузить информацию о диске
+        Fix : [console] pip install psutil
+
+    102 - Не удалось загрузить информацию об ОЗУ
+        Fix : [console] pip install psutil
